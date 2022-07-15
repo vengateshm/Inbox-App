@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Inbox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+            crossorigin="anonymous"
+    />
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+            crossorigin="anonymous"
+    ></script>
+    <style>
+        .container {
+  display: grid;
+
+  grid-template-areas:
+    "header header header"
+    "nav content content"
+    "footer footer footer";
+
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+  grid-gap: 10px;
+
+  height: 100vh;
+}
+header {
+  grid-area: header;
+}
+
+nav {
+  grid-area: nav;
+  margin-left: 0.5rem;
+}
+
+main {
+  grid-area: content;
+}
+
+aside {
+  grid-area: side;
+  margin-right: 0.5rem;
+}
+
+footer {
+  grid-area: footer;
+}
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Hello, Name</h1>
+    </header>
+
+    <nav>
+        <!--Default folders-->
+        <div th:insert="components/folder-list :: folder-list (panelName = 'Folders', folders=${defaultFolders})"></div>
+        <!--User folders-->
+        <div th:insert="components/folder-list :: folder-list (panelName = 'User Folders', folders=${userFolders})"></div>
+    </nav>
+
+    <main>
+        <p>Email list</p>
+    </main>
+
+    <footer>
+        <!-- Footer content -->
+    </footer>
+</div>
+</body>
+</html>
