@@ -4,6 +4,8 @@ import com.datastax.oss.driver.api.core.uuid.Uuids;
 import dev.vengateshm.messagingapp.inbox.emailList.EmailListItem;
 import dev.vengateshm.messagingapp.inbox.emailList.EmailListItemKey;
 import dev.vengateshm.messagingapp.inbox.emailList.EmailListItemRepository;
+import dev.vengateshm.messagingapp.inbox.emails.Email;
+import dev.vengateshm.messagingapp.inbox.emails.EmailRepository;
 import dev.vengateshm.messagingapp.inbox.folders.Folder;
 import dev.vengateshm.messagingapp.inbox.folders.FolderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +27,12 @@ import java.util.Arrays;
 @RestController
 public class MessagingAppApplication {
 
+    @Autowired
     FolderRepository folderRepository;
+    @Autowired
     EmailListItemRepository emailListItemRepository;
-
     @Autowired
-    public void setFolderRepository(FolderRepository folderRepository) {
-        this.folderRepository = folderRepository;
-    }
-
-    @Autowired
-    public void setEmailListItemRepository(EmailListItemRepository emailListItemRepository) {
-        this.emailListItemRepository = emailListItemRepository;
-    }
+    EmailRepository emailRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(MessagingAppApplication.class, args);
@@ -68,11 +64,20 @@ public class MessagingAppApplication {
 
             EmailListItem item = new EmailListItem();
             item.setKey(key);
-            item.setTo(Arrays.asList("vengateshm"));
+            item.setTo(Arrays.asList("vengateshm","abc","def"));
             item.setSubject("Subject " + i);
             item.setUnread(true);
 
             emailListItemRepository.save(item);
+
+            Email email = new Email();
+            email.setId(key.getTimeUUID());
+            email.setFrom("vengateshm");
+            email.setSubject(item.getSubject());
+            email.setBody("Body " + i);
+            email.setTo(item.getTo());
+
+            emailRepository.save(email);
         }
     }
 }
