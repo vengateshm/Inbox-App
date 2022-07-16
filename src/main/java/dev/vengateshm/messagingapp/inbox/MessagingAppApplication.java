@@ -8,12 +8,12 @@ import dev.vengateshm.messagingapp.inbox.emails.Email;
 import dev.vengateshm.messagingapp.inbox.emails.EmailRepository;
 import dev.vengateshm.messagingapp.inbox.folders.Folder;
 import dev.vengateshm.messagingapp.inbox.folders.FolderRepository;
+import dev.vengateshm.messagingapp.inbox.folders.UnreadEmailStatsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.cassandra.CqlSessionBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +33,8 @@ public class MessagingAppApplication {
     EmailListItemRepository emailListItemRepository;
     @Autowired
     EmailRepository emailRepository;
+    @Autowired
+    private UnreadEmailStatsRepository unreadEmailStatsRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(MessagingAppApplication.class, args);
@@ -56,6 +58,10 @@ public class MessagingAppApplication {
         folderRepository.save(new Folder("vengateshm", "Sent", "green"));
         folderRepository.save(new Folder("vengateshm", "Important", "yellow"));
 
+        unreadEmailStatsRepository.incrementUnreadCount("vengateshm", "Inbox");
+        unreadEmailStatsRepository.incrementUnreadCount("vengateshm", "Inbox");
+        unreadEmailStatsRepository.incrementUnreadCount("vengateshm", "Inbox");
+
         for (int i = 0; i < 10; i++) {
             EmailListItemKey key = new EmailListItemKey();
             key.setId("vengateshm");
@@ -64,7 +70,7 @@ public class MessagingAppApplication {
 
             EmailListItem item = new EmailListItem();
             item.setKey(key);
-            item.setTo(Arrays.asList("vengateshm","abc","def"));
+            item.setTo(Arrays.asList("vengateshm", "abc", "def"));
             item.setSubject("Subject " + i);
             item.setUnread(true);
 

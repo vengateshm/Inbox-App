@@ -6,6 +6,7 @@ import dev.vengateshm.messagingapp.inbox.emailList.EmailListItemRepository;
 import dev.vengateshm.messagingapp.inbox.folders.Folder;
 import dev.vengateshm.messagingapp.inbox.folders.FolderRepository;
 import dev.vengateshm.messagingapp.inbox.folders.FoldersService;
+import dev.vengateshm.messagingapp.inbox.folders.UnreadEmailStatsRepository;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,7 +30,6 @@ public class InboxController {
     private FoldersService foldersService;
     @Autowired
     private EmailListItemRepository emailListItemRepository;
-
 
     @GetMapping("/")
     public String homePage(
