@@ -1,11 +1,8 @@
 package dev.vengateshm.messagingapp.inbox;
 
-import com.datastax.oss.driver.api.core.uuid.Uuids;
-import dev.vengateshm.messagingapp.inbox.emailList.EmailListItem;
-import dev.vengateshm.messagingapp.inbox.emailList.EmailListItemKey;
 import dev.vengateshm.messagingapp.inbox.emailList.EmailListItemRepository;
-import dev.vengateshm.messagingapp.inbox.emails.Email;
 import dev.vengateshm.messagingapp.inbox.emails.EmailRepository;
+import dev.vengateshm.messagingapp.inbox.emails.EmailService;
 import dev.vengateshm.messagingapp.inbox.folders.Folder;
 import dev.vengateshm.messagingapp.inbox.folders.FolderRepository;
 import dev.vengateshm.messagingapp.inbox.folders.UnreadEmailStatsRepository;
@@ -34,7 +31,9 @@ public class MessagingAppApplication {
     @Autowired
     EmailRepository emailRepository;
     @Autowired
-    private UnreadEmailStatsRepository unreadEmailStatsRepository;
+    UnreadEmailStatsRepository unreadEmailStatsRepository;
+    @Autowired
+    EmailService emailService;
 
     public static void main(String[] args) {
         SpringApplication.run(MessagingAppApplication.class, args);
@@ -54,16 +53,17 @@ public class MessagingAppApplication {
 
     @PostConstruct
     public void init() {
-        folderRepository.save(new Folder("vengateshm", "Inbox", "blue"));
-        folderRepository.save(new Folder("vengateshm", "Sent", "green"));
-        folderRepository.save(new Folder("vengateshm", "Important", "yellow"));
+        /*folderRepository.save(new Folder("vengateshm", "Family", "blue"));
+        folderRepository.save(new Folder("vengateshm", "Home", "green"));*/
+        folderRepository.save(new Folder("vengateshm", "Work", "yellow"));
 
+        /*unreadEmailStatsRepository.incrementUnreadCount("vengateshm", "Inbox");
         unreadEmailStatsRepository.incrementUnreadCount("vengateshm", "Inbox");
-        unreadEmailStatsRepository.incrementUnreadCount("vengateshm", "Inbox");
-        unreadEmailStatsRepository.incrementUnreadCount("vengateshm", "Inbox");
+        unreadEmailStatsRepository.incrementUnreadCount("vengateshm", "Inbox");*/
 
         for (int i = 0; i < 10; i++) {
-            EmailListItemKey key = new EmailListItemKey();
+            emailService.sendEmail("vengateshm", Arrays.asList("vengateshm", "abc"), "Bonjour! " + i, "Body " + i);
+            /*EmailListItemKey key = new EmailListItemKey();
             key.setId("vengateshm");
             key.setLabel("Inbox");
             key.setTimeUUID(Uuids.timeBased());
@@ -83,7 +83,7 @@ public class MessagingAppApplication {
             email.setBody("Body " + i);
             email.setTo(item.getTo());
 
-            emailRepository.save(email);
+            emailRepository.save(email);*/
         }
     }
 }

@@ -46,6 +46,7 @@ public class EmailViewController {
         if (userFolders.size() > 0) {
             model.addAttribute("userFolders", userFolders);
         }
+        model.addAttribute("stats", foldersService.mapCountToLabels(userId));
 
         Optional<Email> optionalEmail = emailRepository.findById(UUID.fromString(id));
         if (optionalEmail.isEmpty()) {

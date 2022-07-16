@@ -30,6 +30,8 @@ public class InboxController {
     private FoldersService foldersService;
     @Autowired
     private EmailListItemRepository emailListItemRepository;
+    @Autowired
+    private UnreadEmailStatsRepository unreadEmailStatsRepository;
 
     @GetMapping("/")
     public String homePage(
@@ -51,7 +53,7 @@ public class InboxController {
             model.addAttribute("userFolders", userFolders);
         }
         //model.addAttribute("userFolders", defaultFolders);
-
+        model.addAttribute("stats", foldersService.mapCountToLabels(userId));
         // Fetch messages
         if (!StringUtils.hasText(folder)) {
             folder = "Inbox";

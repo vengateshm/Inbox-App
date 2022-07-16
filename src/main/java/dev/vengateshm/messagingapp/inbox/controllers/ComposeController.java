@@ -51,6 +51,8 @@ public class ComposeController {
         List<Folder> userFolders = folderRepository.findAllById(userId);
         model.addAttribute("userFolders", userFolders);
 
+        model.addAttribute("stats", foldersService.mapCountToLabels(userId));
+
         List<String> uniqueToIds = splitIds(to);
         model.addAttribute("toIds", String.join(", ", uniqueToIds));
 
