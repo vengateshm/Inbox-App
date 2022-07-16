@@ -26,10 +26,10 @@ public class InboxController {
     @Autowired
     private FolderRepository folderRepository;
     @Autowired
+    private FoldersService foldersService;
+    @Autowired
     private EmailListItemRepository emailListItemRepository;
 
-    @Autowired
-    private FoldersService foldersService;
 
     @GetMapping("/")
     public String homePage(

@@ -55,6 +55,7 @@ footer {
 
 
 
+
     </style>
 </head>
 <body>
@@ -64,6 +65,9 @@ footer {
     </header>
 
     <nav>
+        <div class="card">
+            <a href="/compose" class="btn btn-primary">Compose Message</a>
+        </div>
         <!--Default folders-->
         <div th:insert="components/folder-list :: folder-list (panelName = 'Folders', folders=${defaultFolders})"></div>
         <!--User folders-->
