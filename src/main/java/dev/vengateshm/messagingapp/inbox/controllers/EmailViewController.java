@@ -5,6 +5,7 @@ import dev.vengateshm.messagingapp.inbox.emailList.EmailListItemKey;
 import dev.vengateshm.messagingapp.inbox.emailList.EmailListItemRepository;
 import dev.vengateshm.messagingapp.inbox.emails.Email;
 import dev.vengateshm.messagingapp.inbox.emails.EmailRepository;
+import dev.vengateshm.messagingapp.inbox.emails.EmailService;
 import dev.vengateshm.messagingapp.inbox.folders.Folder;
 import dev.vengateshm.messagingapp.inbox.folders.FolderRepository;
 import dev.vengateshm.messagingapp.inbox.folders.FoldersService;
@@ -35,6 +36,8 @@ public class EmailViewController {
     private EmailListItemRepository emailListItemRepository;
     @Autowired
     private UnreadEmailStatsRepository unreadEmailStatsRepository;
+    @Autowired
+    EmailService emailService;
 
     @GetMapping("/emails/{id}")
     public String emailView(
@@ -67,7 +70,7 @@ public class EmailViewController {
 
         // Check if the user is allowed to see the email
         assert userId != null;
-        if(!userId.equals(email.getFrom()) && !email.getTo().contains(userId)){
+        if (!emailService.doesHaveAccessToEmail(email, userId)) {
             return "redirect:/";
         }
 

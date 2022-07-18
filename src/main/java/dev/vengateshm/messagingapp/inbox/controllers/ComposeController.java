@@ -1,5 +1,7 @@
 package dev.vengateshm.messagingapp.inbox.controllers;
 
+import dev.vengateshm.messagingapp.inbox.emails.Email;
+import dev.vengateshm.messagingapp.inbox.emails.EmailRepository;
 import dev.vengateshm.messagingapp.inbox.emails.EmailService;
 import dev.vengateshm.messagingapp.inbox.folders.Folder;
 import dev.vengateshm.messagingapp.inbox.folders.FolderRepository;
@@ -17,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -31,9 +31,12 @@ public class ComposeController {
     private FoldersService foldersService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private EmailRepository emailRepository;
 
     @GetMapping(value = "/compose")
     public String getComposePage(
+            @RequestParam(required = false) UUID id,
             @RequestParam(required = false) String to, // exact variable name must be specified
             @AuthenticationPrincipal OAuth2User principal,
             Model model) {
@@ -55,6 +58,18 @@ public class ComposeController {
 
         List<String> uniqueToIds = splitIds(to);
         model.addAttribute("toIds", String.join(", ", uniqueToIds));
+
+        if (id != null) {
+            Optional<Email> optionalEmail = emailRepository.findById(id);
+            if (optionalEmail.isPresent()) {
+                Email email = optionalEmail.get();
+                assert userId != null;
+                if (emailService.doesHaveAccessToEmail(email, userId)) {
+                    model.addAttribute("subject", emailService.getReplySubject(email.getSubject()));
+                    model.addAttribute("body", emailService.getReplyBody(email));
+                }
+            }
+        }
 
         return "compose-page";
     }
