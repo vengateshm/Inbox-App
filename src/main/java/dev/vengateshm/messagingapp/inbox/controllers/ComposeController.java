@@ -50,7 +50,7 @@ public class ComposeController {
         // Folders from cassandra db
         List<Folder> userFolders = folderRepository.findAllById(userId);
         model.addAttribute("userFolders", userFolders);
-
+        model.addAttribute("userName", principal.getAttribute("name"));
         model.addAttribute("stats", foldersService.mapCountToLabels(userId));
 
         List<String> uniqueToIds = splitIds(to);

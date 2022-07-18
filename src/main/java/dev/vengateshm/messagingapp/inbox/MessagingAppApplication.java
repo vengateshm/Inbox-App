@@ -85,5 +85,6 @@ public class MessagingAppApplication {
 
             emailRepository.save(email);*/
         }
+        emailService.sendEmail("abc", Arrays.asList("def", "abc"), "Bonjour! ", "Body ");
     }
 }

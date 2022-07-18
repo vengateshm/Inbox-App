@@ -19,6 +19,7 @@
     <style>
         .container {
   display: grid;
+  margin-top: 20px;
 
   grid-template-areas:
     "header header header"
@@ -52,17 +53,15 @@ aside {
 footer {
   grid-area: footer;
 }
-
-
-
-
-
     </style>
 </head>
 <body>
 <div class="container">
+    <!--Can be extracted as component-->
     <header>
-        <h1>Hello, Name</h1>
+        <h3>Inbox App</h3>
+        <small class="text-muted">Welcome, </small>
+        <small class="text-muted" th:text="${userName}"></small>
     </header>
 
     <nav>

@@ -54,6 +54,7 @@ public class InboxController {
         }
         //model.addAttribute("userFolders", defaultFolders);
         model.addAttribute("stats", foldersService.mapCountToLabels(userId));
+        model.addAttribute("userName", principal.getAttribute("name"));
         // Fetch messages
         if (!StringUtils.hasText(folder)) {
             folder = "Inbox";
@@ -61,7 +62,7 @@ public class InboxController {
         List<EmailListItem> emailList = emailListItemRepository.findAllByKey_IdAndKey_Label(userId, folder);
 
         PrettyTime p = new PrettyTime();
-        emailList.stream().forEach(emailItem -> {
+        emailList.forEach(emailItem -> {
             UUID timeUUID = emailItem.getKey().getTimeUUID();
             Date emailDateTime = new Date(Uuids.unixTimestamp(timeUUID));
             emailItem.setAgoTimeString(p.format(emailDateTime));
